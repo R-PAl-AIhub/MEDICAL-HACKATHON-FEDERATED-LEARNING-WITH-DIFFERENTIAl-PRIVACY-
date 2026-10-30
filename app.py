@@ -1,7 +1,16 @@
+import os
+from pathlib import Path
+
 import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+
+# Path to the federated global model. Set FL_WEIGHTS_PATH to override.
+WEIGHTS_PATH = os.environ.get(
+    "FL_WEIGHTS_PATH",
+    str(Path(__file__).resolve().parent / "HOSPITAL" / "global_model.weights.h5"),
+)
 
 st.title("Federated Medical Diagnosis - Global Model Demo")
 st.write("Upload an X-ray image to classify Normal vs Pneumonia.")
@@ -43,7 +52,15 @@ def build_model(weights):
 
 @st.cache_resource
 def load_model():
-    return build_model("/mnt/d/RATUL/COMPUTER PROGRAMMING AND CODING/TENSORFLOW/MEDICAL HACKATHON/HOSPITAL/global_model.weights.h5")
+    return build_model(WEIGHTS_PATH)
+
+if not Path(WEIGHTS_PATH).exists():
+    st.error(
+        f"Model weights not found at `{WEIGHTS_PATH}`. "
+        "Run main.ipynb to create global_model.weights.h5, "
+        "then put it there or set the FL_WEIGHTS_PATH environment variable."
+    )
+    st.stop()
 
 model = load_model()
 

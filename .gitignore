@@ -1,0 +1,18 @@
+# Data and model weights (kept out of git)
+chest_xray/
+HOSPITAL/
+GLOBAL_TEST_DATASET/
+*.h5
+*.keras
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
