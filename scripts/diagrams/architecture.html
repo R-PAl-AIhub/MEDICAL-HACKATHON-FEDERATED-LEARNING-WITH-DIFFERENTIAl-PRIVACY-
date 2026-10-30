@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Federated architecture</title>
+<style>
+  :root {
+    --bg: #ffffff; --card: #f6f8fa; --line: #d0d7de; --ink: #0b0b0b; --ink2: #52514e; --muted: #6e6d68;
+    --h1: #2a78d6; --h2: #eb6834; --h3: #1baf7a; --srv: #6250d6; --ok: #0a7d34; --chip: #ffffff;
+  }
+  body[data-theme="dark"] {
+    --bg: #0d1117; --card: #161b22; --line: #30363d; --ink: #f0efec; --ink2: #c3c2b7; --muted: #8b949e;
+    --h1: #3987e5; --h2: #d95926; --h3: #199e70; --srv: #9085e9; --ok: #3fb950; --chip: #0d1117;
+  }
+  html, body { margin: 0; background: var(--bg); }
+  svg { display: block; font-family: Inter, "Segoe UI", sans-serif; }
+  .t  { fill: var(--ink); }
+  .t2 { fill: var(--ink2); }
+  .m  { fill: var(--muted); }
+  .card { fill: var(--card); stroke: var(--line); stroke-width: 1; }
+  .chip { fill: var(--chip); stroke: var(--line); stroke-width: 1; }
+  .wire { stroke: var(--ink2); stroke-width: 1.6; fill: none; }
+  .back { stroke: var(--muted); stroke-width: 1.6; fill: none; stroke-dasharray: 6 5; }
+</style>
+</head>
+<body>
+<svg id="diagram" width="1200" height="640" viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" style="fill: var(--ink2)"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" style="fill: var(--muted)"/>
+    </marker>
+    <g id="lock">
+      <rect x="0" y="6" width="12" height="9" rx="2" style="fill: var(--ok)"/>
+      <path d="M3 6 V4 a3 3 0 0 1 6 0 V6" style="stroke: var(--ok); stroke-width: 1.8; fill: none"/>
+    </g>
+    <g id="db">
+      <ellipse cx="18" cy="6" rx="18" ry="6" class="chip"/>
+      <path d="M0 6 V30 a18 6 0 0 0 36 0 V6" class="chip"/>
+      <path d="M0 18 a18 6 0 0 0 36 0" style="stroke: var(--line); fill: none"/>
+    </g>
+  </defs>
+
+  <!-- column titles -->
+  <text x="24" y="30" class="m" font-size="12" font-weight="600" letter-spacing="1.2">CLIENTS · DATA STAYS LOCAL</text>
+  <text x="572" y="30" class="m" font-size="12" font-weight="600" letter-spacing="1.2">SERVER</text>
+  <text x="884" y="30" class="m" font-size="12" font-weight="600" letter-spacing="1.2">OUTPUT</text>
+
+  <!-- ============ hospitals ============ -->
+  <g id="hosp1" transform="translate(24,48)">
+    <rect width="472" height="166" rx="14" class="card"/>
+    <rect width="6" height="166" rx="3" style="fill: var(--h1)"/>
+    <text x="24" y="32" class="t" font-size="17" font-weight="700">Hospital 1</text>
+    <text x="118" y="32" class="m" font-size="13">1,739 train · 208 test X-rays</text>
+    <use href="#lock" x="440" y="18"/>
+    <use href="#db" x="24" y="62"/>
+    <text x="42" y="124" class="t2" font-size="11.5" text-anchor="middle">Local data</text>
+    <path d="M70 80 H96" class="wire" marker-end="url(#a)"/>
+    <rect x="102" y="56" width="168" height="50" rx="9" class="chip"/>
+    <text x="186" y="77" class="t" font-size="13" font-weight="600" text-anchor="middle">EfficientNetV2-S</text>
+    <text x="186" y="95" class="m" font-size="11.5" text-anchor="middle">1 local epoch per round</text>
+    <path d="M270 80 H296" class="wire" marker-end="url(#a)"/>
+    <rect x="302" y="56" width="148" height="50" rx="9" class="chip"/>
+    <text x="376" y="77" class="t" font-size="13" font-weight="600" text-anchor="middle">+ Gaussian noise</text>
+    <text x="376" y="95" class="m" font-size="11.5" text-anchor="middle">σ = 1e-7 on weights</text>
+    <text x="24" y="150" class="m" font-size="11.5">Raw images never leave this box</text>
+  </g>
+  <g id="hosp2" transform="translate(24,234)">
+    <rect width="472" height="166" rx="14" class="card"/>
+    <rect width="6" height="166" rx="3" style="fill: var(--h2)"/>
+    <text x="24" y="32" class="t" font-size="17" font-weight="700">Hospital 2</text>
+    <text x="118" y="32" class="m" font-size="13">1,739 train · 208 test X-rays</text>
+    <use href="#lock" x="440" y="18"/>
+    <use href="#db" x="24" y="62"/>
+    <text x="42" y="124" class="t2" font-size="11.5" text-anchor="middle">Local data</text>
+    <path d="M70 80 H96" class="wire" marker-end="url(#a)"/>
+    <rect x="102" y="56" width="168" height="50" rx="9" class="chip"/>
+    <text x="186" y="77" class="t" font-size="13" font-weight="600" text-anchor="middle">EfficientNetV2-S</text>
+    <text x="186" y="95" class="m" font-size="11.5" text-anchor="middle">1 local epoch per round</text>
+    <path d="M270 80 H296" class="wire" marker-end="url(#a)"/>
+    <rect x="302" y="56" width="148" height="50" rx="9" class="chip"/>
+    <text x="376" y="77" class="t" font-size="13" font-weight="600" text-anchor="middle">+ Gaussian noise</text>
+    <text x="376" y="95" class="m" font-size="11.5" text-anchor="middle">σ = 1e-7 on weights</text>
+    <text x="24" y="150" class="m" font-size="11.5">Raw images never leave this box</text>
+  </g>
+  <g id="hosp3" transform="translate(24,420)">
+    <rect width="472" height="166" rx="14" class="card"/>
+    <rect width="6" height="166" rx="3" style="fill: var(--h3)"/>
+    <text x="24" y="32" class="t" font-size="17" font-weight="700">Hospital 3</text>
+    <text x="118" y="32" class="m" font-size="13">1,738 train · 208 test X-rays</text>
+    <use href="#lock" x="440" y="18"/>
+    <use href="#db" x="24" y="62"/>
+    <text x="42" y="124" class="t2" font-size="11.5" text-anchor="middle">Local data</text>
+    <path d="M70 80 H96" class="wire" marker-end="url(#a)"/>
+    <rect x="102" y="56" width="168" height="50" rx="9" class="chip"/>
+    <text x="186" y="77" class="t" font-size="13" font-weight="600" text-anchor="middle">EfficientNetV2-S</text>
+    <text x="186" y="95" class="m" font-size="11.5" text-anchor="middle">1 local epoch per round</text>
+    <path d="M270 80 H296" class="wire" marker-end="url(#a)"/>
+    <rect x="302" y="56" width="148" height="50" rx="9" class="chip"/>
+    <text x="376" y="77" class="t" font-size="13" font-weight="600" text-anchor="middle">+ Gaussian noise</text>
+    <text x="376" y="95" class="m" font-size="11.5" text-anchor="middle">σ = 1e-7 on weights</text>
+    <text x="24" y="150" class="m" font-size="11.5">Raw images never leave this box</text>
+  </g>
+
+  <!-- ============ links: hospitals -> server (solid), server -> hospitals (dashed) ============ -->
+  <path d="M496 120 C 535 120, 530 268, 568 268" class="wire" marker-end="url(#a)"/>
+  <path d="M568 286 C 530 286, 535 140, 496 140" class="back" marker-end="url(#b)"/>
+  <path d="M496 306 H568" class="wire" marker-end="url(#a)"/>
+  <path d="M568 326 H496" class="back" marker-end="url(#b)"/>
+  <path d="M496 494 C 535 494, 530 350, 568 350" class="wire" marker-end="url(#a)"/>
+  <path d="M568 368 C 530 368, 535 512, 496 512" class="back" marker-end="url(#b)"/>
+
+  <!-- ============ server ============ -->
+  <g transform="translate(572,214)">
+    <rect width="270" height="212" rx="14" class="card"/>
+    <rect width="270" height="6" rx="3" style="fill: var(--srv)"/>
+    <text x="22" y="40" class="t" font-size="17" font-weight="700">Aggregation server</text>
+    <text x="22" y="62" class="m" font-size="12.5">Weighted Federated Averaging</text>
+    <rect x="22" y="80" width="226" height="52" rx="9" class="chip"/>
+    <text x="135" y="113" class="t" font-size="18" font-weight="600" text-anchor="middle">W = Σ (nₖ / N) · Wₖ</text>
+    <text x="22" y="158" class="t2" font-size="12.5">nₖ = train images at hospital k</text>
+    <text x="22" y="182" class="t2" font-size="12.5">Repeats for 5 rounds</text>
+  </g>
+
+  <!-- ============ output ============ -->
+  <path d="M842 300 H 880" class="wire" marker-end="url(#a)"/>
+  <g transform="translate(886,214)">
+    <rect width="290" height="112" rx="14" class="card"/>
+    <text x="22" y="36" class="t" font-size="17" font-weight="700">Global model</text>
+    <text x="22" y="60" class="m" font-size="12.5">global_model.weights.h5</text>
+    <text x="22" y="90" class="t" font-size="22" font-weight="700">82.4%</text>
+    <text x="100" y="89" class="t2" font-size="12.5">accuracy · 624 test X-rays</text>
+  </g>
+  <path d="M1031 326 V 360" class="wire" marker-end="url(#a)"/>
+  <g transform="translate(886,366)">
+    <rect width="290" height="112" rx="14" class="card"/>
+    <text x="22" y="36" class="t" font-size="17" font-weight="700">Streamlit demo</text>
+    <text x="22" y="60" class="m" font-size="12.5">app.py</text>
+    <text x="22" y="88" class="t2" font-size="12.5">Upload an X-ray → Normal or</text>
+    <text x="22" y="105" class="t2" font-size="12.5">Pneumonia, with confidence</text>
+  </g>
+
+  <!-- ============ legend ============ -->
+  <g transform="translate(24,616)">
+    <path d="M0 0 H34" class="wire" marker-end="url(#a)"/>
+    <text x="44" y="4" class="t2" font-size="12.5">local weights (no images)</text>
+    <path d="M230 0 H264" class="back" marker-end="url(#b)"/>
+    <text x="274" y="4" class="t2" font-size="12.5">new global weights</text>
+    <use href="#lock" x="440" y="-9"/>
+    <text x="460" y="4" class="t2" font-size="12.5">data boundary</text>
+  </g>
+</svg>
+</body>
+</html>

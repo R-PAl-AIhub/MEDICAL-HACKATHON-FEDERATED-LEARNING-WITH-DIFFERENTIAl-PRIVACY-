@@ -1,0 +1,10 @@
+# Demo app (app.py)
+streamlit
+tensorflow-cpu>=2.16   # Keras 3 (.weights.h5 format). Use "tensorflow" for GPU training.
+numpy
+pillow
+
+# Training notebook (main.ipynb)
+pandas
+matplotlib
+seaborn
