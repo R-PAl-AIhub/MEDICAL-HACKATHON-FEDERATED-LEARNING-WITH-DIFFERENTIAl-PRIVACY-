@@ -169,7 +169,7 @@ sequenceDiagram
 The server weights each hospital by how many training images it has:
 
 $$
-W_{\text{global}} \;=\; \sum_{k=1}^{3} \frac{n_k}{N}\, W_k \qquad\text{with}\qquad N = \sum_{k=1}^{3} n_k
+W_{\text{global}} = \sum_{k=1}^{3} \frac{n_k}{N} W_k \qquad \text{with} \qquad N = \sum_{k=1}^{3} n_k
 $$
 
 Here $n_1 = 1739$, $n_2 = 1739$ and $n_3 = 1738$ training images.
@@ -340,7 +340,7 @@ The repo also has a [dev container](.devcontainer/devcontainer.json). GitHub Cod
 
 ```text
 .
-├── main.ipynb                # full pipeline: split → local training → FedAvg rounds → evaluation
+├── main.ipynb                # split → local training → FedAvg → evaluation
 ├── app.py                    # Streamlit demo for the global model
 ├── requirements.txt
 ├── assets/                   # charts and diagrams in this README
